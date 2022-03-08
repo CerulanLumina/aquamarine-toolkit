@@ -1,6 +1,7 @@
 use std::error::Error;
 use std::net::{SocketAddr, TcpListener, TcpStream};
 use log::{debug, error, info};
+use crate::protocol::{AquamarineMessage, ProtocolSender};
 
 struct AquamarineServer {
     tcp_listener: TcpListener
@@ -22,7 +23,7 @@ impl AquamarineServer {
                 Ok((stream, addr)) => {
                     info!("Accepted connection from {}", addr);
 
-                    handle_connection(stream)
+                    handle_connection(stream);
 
                 }
                 Err(err) => {
@@ -34,8 +35,13 @@ impl AquamarineServer {
     }
 }
 
-fn handle_connection(mut stream: TcpStream) {
+fn handle_connection(stream: TcpStream) -> Result<(), Box<dyn Error>> {
+    let mut sender = ProtocolSender::from_stream(stream);
+    sender.send_message(AquamarineMessage::Hello { proto_version: crate::PROTOCOL_VERSION })?;
 
+    
+
+    Ok(())
 }
 
 pub fn start_server(addr: SocketAddr) {
