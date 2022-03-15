@@ -2,12 +2,11 @@ use std::net::SocketAddr;
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
-pub enum AquamarineToolkitOpt {
-    Server {
-        #[structopt(default_value = "0.0.0.0:7262", )]
-        bind_ip: SocketAddr
-    },
-    Client {
-        connect_ip: SocketAddr
-    },
+#[structopt(name = "aquamarine-toolkit", about = "A collection of tools for multi-computer productivity")]
+pub struct AquamarineToolkit {
+    #[structopt(long, short)]
+    pub daemon: bool,
+
+    #[structopt(long, required_if("daemon", "true"))]
+    pub bind: SocketAddr
 }
