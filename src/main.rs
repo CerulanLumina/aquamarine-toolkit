@@ -1,6 +1,6 @@
 mod app;
 mod server;
-mod protocol;
+mod plugins;
 
 use log::*;
 use structopt::StructOpt;

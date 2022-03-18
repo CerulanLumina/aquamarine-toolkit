@@ -1,7 +1,6 @@
 use std::error::Error;
 use std::net::{SocketAddr, TcpListener, TcpStream, UdpSocket};
-use log::{debug, error, info};
-use crate::protocol::{AquamarineMessage, ProtocolSender};
+use log::{debug, error, info, trace, warn};
 
 struct AquamarineServer {
     udp_socket: UdpSocket
@@ -22,13 +21,20 @@ impl AquamarineServer {
         loop {
             if let Ok(recv) = self.udp_socket.recv(&mut bytes) {
                 let recv_slice = &bytes[0..recv];
+                trace!("Received data: {:x?}", recv_slice)
                 
+            } else {
+                warn!("Failed to receive data from UDP");
             }
         }
     }
 }
 
 pub fn start_server(addr: SocketAddr) {
+
+    let plugins = crate::app::plugin_load::load_plugins();
+
+
     match AquamarineServer::new(addr) {
         Ok(server) => {
             server.run_server()

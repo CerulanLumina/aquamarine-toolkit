@@ -1,3 +1,5 @@
+pub mod plugin_load;
+
 use std::net::SocketAddr;
 use structopt::StructOpt;
 
