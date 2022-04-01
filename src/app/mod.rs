@@ -10,7 +10,17 @@ pub struct AquamarineToolkit {
     pub daemon: bool,
 
     #[structopt(long, required_if("daemon", "true"), default_value = "[::0]:7262")]
-    pub bind: SocketAddr
+    pub bind: SocketAddr,
+
+    #[structopt(subcommand)]
+    pub command: Option<ClientCommand>,
+}
+
+#[derive(Debug, StructOpt)]
+pub enum ClientCommand {
+    Browser {
+        url: String
+    }
 }
 
 

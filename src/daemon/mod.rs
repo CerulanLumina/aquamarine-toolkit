@@ -3,7 +3,7 @@ use std::error::Error;
 use std::net::{SocketAddr, TcpListener, TcpStream, UdpSocket};
 use log::{debug, error, info, trace, warn};
 use aquamarine_toolkit_api::PluginDefinition;
-use crate::plugins::AquamarineMessage;
+use aquamarine_toolkit_api::AquamarineMessage;
 
 struct AquamarineServer {
     udp_socket: UdpSocket
@@ -58,7 +58,7 @@ pub fn start_server(addr: SocketAddr) {
             server.run_server(map)
         },
         Err(err) => {
-            error!("Failed to start server {}", err);
+            error!("Failed to start daemon {}", err);
         }
     }
 }
