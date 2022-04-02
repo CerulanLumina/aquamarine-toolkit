@@ -23,7 +23,7 @@ pub enum AquamarineMessage {
 
 pub fn send_message_to_server(from: String, data: Vec<u8>) -> Result<(), AquamarineError> {
     let config = load_client_config()?;
-    let socket = UdpSocket::bind(["0.0.0.0:0"].into_iter().map(|a| a.to_socket_addrs().unwrap().next().unwrap()).collect::<Vec<_>>().as_slice());
+    let socket = UdpSocket::bind("0.0.0.0:0");
     if socket.is_err() {
         error!("Unable to bind socket");
     }
@@ -36,8 +36,9 @@ pub fn send_message_to_server(from: String, data: Vec<u8>) -> Result<(), Aquamar
 }
 
 fn load_client_config() -> Result<ClientConfig, AquamarineError> {
+    trace!("Loading client config.");
     let path = dirs::config_dir().map(|a| a.join(CLIENT_CONFIG_FILE));
-    trace!("Loading config file: {:?}", path);
+    debug!("Loading config file: {:?}", path);
     if let None = path {
         error!("Failed to determine config file path.");
         return Err(AquamarineError::NoConfigFile);
@@ -57,6 +58,7 @@ fn load_client_config() -> Result<ClientConfig, AquamarineError> {
     // not exists or is dir
     if path.is_file() {
         let file = File::open(&path)?;
+        trace!("Deserializing...");
         let config = serde_json::from_reader::<_, ClientConfig>(file)?;
         Ok(config)
     } else {
