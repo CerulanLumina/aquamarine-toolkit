@@ -4,7 +4,10 @@ use std::net::SocketAddr;
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "aquamarine-toolkit", about = "A collection of tools for multi-computer productivity")]
+#[structopt(
+    name = "aquamarine-toolkit",
+    about = "A collection of tools for multi-computer productivity"
+)]
 pub struct AquamarineToolkit {
     #[structopt(long, short)]
     pub daemon: bool,
@@ -18,9 +21,5 @@ pub struct AquamarineToolkit {
 
 #[derive(Debug, StructOpt)]
 pub enum ClientCommand {
-    Browser {
-        url: String
-    }
+    Browser { url: String },
 }
-
-

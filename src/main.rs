@@ -2,10 +2,10 @@ mod app;
 mod daemon;
 mod plugins;
 
+use crate::app::ClientCommand;
+use app::AquamarineToolkit;
 use log::*;
 use structopt::StructOpt;
-use app::AquamarineToolkit;
-use crate::app::ClientCommand;
 
 fn main() {
     pretty_env_logger::init();
@@ -14,14 +14,8 @@ fn main() {
     if opt.daemon {
         daemon::start_server(opt.bind);
     } else if opt.command.is_some() {
-
-
-
         match opt.command.unwrap() {
-            ClientCommand::Browser { url } => {
-                plugins::browser::send(url)
-            }
+            ClientCommand::Browser { url } => plugins::browser::send(url),
         }
     }
-
 }
